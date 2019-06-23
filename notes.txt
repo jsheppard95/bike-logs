@@ -1,0 +1,10 @@
+Text file to brainstorm ideas
+
+Want a file that looks like:
+bike-logs.csv
+---------------------------------------------------------------------------
+date length_of_journey(mi)
+2019-06-16T14:57:48.675649 2.8
+2019-06-16T14:59:08.244144 1.6
+---------------------------------------------------------------------------
+Then can have functions that read the file and total up the distance
