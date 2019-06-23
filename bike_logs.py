@@ -36,7 +36,7 @@ class BikeLogs:
         now = datetime.datetime.now()
         now_iso = now.isoformat() # YYYY-MM-DDTHH:MM:SS
         today = now_iso[:10]
-        f.write(today + ' ' + str(distance_travelled) + '\n')
+        f.write(today + ',' + str(distance_travelled) + '\n')
         f.close()
 
     def print_total_distance(self):
@@ -53,7 +53,7 @@ class BikeLogs:
         dates = []
         f = open('bike-logs.csv', 'r')
         for line in f:
-            line_values = line.split(' ') # list [time, distance_travelled]
+            line_values = line.split(',') # list [time, distance_travelled]
             dates.append(line_values[0])
             total_distance += float(line_values[1])
         f.close()
@@ -74,7 +74,7 @@ class BikeLogs:
         # dates : array containing floating point numbers representing date
         # distances : corresponding distance travelled on that date
         dates, distances = np.loadtxt('bike-logs.csv', unpack=True,
-                                      delimiter=' ',
+                                      delimiter=',',
                                       converters= {0:self.decode_date})
         # Get cumulative distance array
         cumulative_distances = np.zeros(len(distances))
