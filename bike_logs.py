@@ -27,9 +27,11 @@ class BikeLogs:
         unit : string, opt
             unit of choice, default to mi, can use 'km'
         """
-        if unit == 'km':
-            # convert to mi, 1 mi = 1.60934 km
-            distance_travelled *= (1/1.60934) 
+        # Writing distance in miles to file, use conversion dictionary
+        CONVERSIONS={'mi': 1.0, 'km': 1.60934}
+        if unit not in CONVERSIONS.keys():
+            raise ValueError("Unit either invalid or not implemented")
+        distance_travelled *= 1.0/CONVERSIONS[unit] # Converting input unit to miles
         f = open('bike-logs.csv', 'a')
         now = datetime.datetime.now()
         now_iso = now.isoformat() # YYYY-MM-DDTHH:MM:SS
@@ -37,7 +39,7 @@ class BikeLogs:
         f.write(today + ' ' + str(distance_travelled) + '\n')
         f.close()
 
-    def get_total_distance(self):
+    def print_total_distance(self):
         """
         Function that returns the total travelled
 
@@ -48,14 +50,17 @@ class BikeLogs:
         """
         # First total up single ride distances found in bike-logs.csv
         total_distance = 0
+        dates = []
         f = open('bike-logs.csv', 'r')
         for line in f:
             line_values = line.split(' ') # list [time, distance_travelled]
+            dates.append(line_values[0])
             total_distance += float(line_values[1])
         f.close()
-        return total_distance
-    
-    def convert_date(self, date_bytes):
+        print('Timeframe: %s to %s' % (dates[0], dates[-1])) 
+        print('Total Distance Travelled: %.2f mi' % total_distance)
+
+    def decode_date(self, date_bytes):
         """
         Helper function needed to get dates into array
         """
@@ -70,14 +75,14 @@ class BikeLogs:
         # distances : corresponding distance travelled on that date
         dates, distances = np.loadtxt('bike-logs.csv', unpack=True,
                                       delimiter=' ',
-                                      converters= {0:self.convert_date})
+                                      converters= {0:self.decode_date})
         # Get cumulative distance array
         cumulative_distances = np.zeros(len(distances))
         for i in range(1, len(distances)):
             cumulative_distances[i] = cumulative_distances[i-1] + \
                                       distances[i]
         f1, ax1 = plt.subplots()
-        ax1.plot_date(x=dates, y=cumulative_distances, fmt='r-')
+        ax1.plot_date(x=dates, y=cumulative_distances, fmt='r.')
         ax1.set_title("Cumulative Distance vs. Time")
         ax1.set_xlabel("Time")
         ax1.set_ylabel("Cumulative Distance (mi)")
