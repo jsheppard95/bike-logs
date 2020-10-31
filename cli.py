@@ -15,6 +15,7 @@ parser = argparse.ArgumentParser(description='bike-logs command line utility')
 
 parser.add_argument('--plot', '-p', action='store_true',
                     help='Plot cumulative distance vs. time')
+# TODO: Add write argument, store value and unit
 
 args = parser.parse_args()
 

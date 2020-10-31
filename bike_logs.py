@@ -32,7 +32,8 @@ class BikeLogs:
         if unit not in CONVERSIONS.keys():
             raise ValueError("Unit either invalid or not implemented")
         distance_travelled *= 1.0/CONVERSIONS[unit] # Converting input unit to miles
-        f = open('bike-logs.csv', 'a')
+        f = open('/Users/JacksonSheppard/Desktop/bike-logs/bike-logs.csv',
+                 'a')
         now = datetime.datetime.now()
         now_iso = now.isoformat() # YYYY-MM-DDTHH:MM:SS
         today = now_iso[:10]
@@ -51,7 +52,7 @@ class BikeLogs:
         # First total up single ride distances found in bike-logs.csv
         total_distance = 0
         dates = []
-        f = open('bike-logs.csv', 'r')
+        f = open('/Users/JacksonSheppard/Desktop/bike-logs/bike-logs.csv', 'r')
         for line in f:
             line_values = line.split(',') # list [time, distance_travelled]
             dates.append(line_values[0])
@@ -73,7 +74,7 @@ class BikeLogs:
         # Some numpy magic
         # dates : array containing floating point numbers representing date
         # distances : corresponding distance travelled on that date
-        dates, distances = np.loadtxt('bike-logs.csv', unpack=True,
+        dates, distances = np.loadtxt('/Users/JacksonSheppard/Desktop/bike-logs/bike-logs.csv', unpack=True,
                                       delimiter=',',
                                       converters= {0:self.decode_date})
         # Get cumulative distance array
